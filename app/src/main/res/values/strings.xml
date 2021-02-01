@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Todos</string>
+    <string name="today">Today</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="all">All</string>
+    <string name="starred">Starred</string>
+</resources>
