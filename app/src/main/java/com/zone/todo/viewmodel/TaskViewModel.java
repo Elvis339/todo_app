@@ -22,16 +22,24 @@ public class TaskViewModel extends AndroidViewModel {
         super(application);
         AppDatabase database = AppDatabase.getAppDatabase(this.getApplication());
         Log.d(TAG, "Actively retrieving the tasks from the DataBase");
-        tasks = database.taskDao().getAllTasks();
+        tasks = database.taskDao().getAllOpenTasks();
     }
 
-    public LiveData<List<Task>> loadAllTasks() {
-        tasks = database.taskDao().getAllTasks();
+    public LiveData<List<Task>> loadAllOpenTasks() {
+        tasks = AppDatabase.getAppDatabase(this.getApplication()).taskDao().getAllOpenTasks();
         return tasks;
     }
 
     public LiveData<Task> getTaskById(int id) {
         return database.taskDao().getTaskById(id);
+    }
+
+    public void deleteTask(Task task) {
+        AppDatabase.getAppDatabase(this.getApplication()).taskDao().deleteTask(task);
+    }
+
+    public void completeTaskById(int id) {
+        AppDatabase.getAppDatabase(this.getApplication()).taskDao().completeTaskById(id);
     }
 
     public LiveData<List<Task>> getTasksObserver() {

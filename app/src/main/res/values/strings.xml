@@ -4,4 +4,10 @@
     <string name="scheduled">Scheduled</string>
     <string name="all">All</string>
     <string name="starred">Starred</string>
+    <string name="my_todos">My Todos</string>
+    <string name="task_name">Task name</string>
+    <string name="description">Description</string>
+    <string name="add_media">Add media</string>
+    <string name="add_location">Add location</string>
+    <string name="save_task_details">Save Task Details</string>
 </resources>

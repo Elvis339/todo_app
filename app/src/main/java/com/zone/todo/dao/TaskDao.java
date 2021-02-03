@@ -17,6 +17,9 @@ public interface TaskDao {
     @Query("SELECT * FROM task")
     LiveData<List<Task>> getAllTasks();
 
+    @Query("SELECT * FROM task WHERE isCompleted = 0")
+    LiveData<List<Task>> getAllOpenTasks();
+
     @Query("SELECT * FROM task WHERE taskId = :id")
     LiveData<Task> getTaskById(int id);
 
@@ -34,6 +37,9 @@ public interface TaskDao {
 
     @Query("SELECT COUNT(*) FROM task WHERE isStarred=1")
     int totalStarredTasks();
+
+    @Query("UPDATE task SET isCompleted = 1 WHERE taskId = :id")
+    void completeTaskById(int id);
 
     @Insert
     void insertTask(Task task);

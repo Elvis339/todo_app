@@ -25,7 +25,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
     final private ItemClickListener mItemClickListener;
-    final private Context mContext;
+    final public Context mContext;
 
     private List<Task> mTasks;
 
@@ -60,6 +60,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyDataSetChanged();
     }
 
+    public List<Task> getTasks() {
+        return mTasks;
+    }
+
     @Override
     public int getItemCount() {
         if (mTasks == null) {
@@ -74,14 +78,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView taskName, taskDate, todayCounter;
+        TextView taskName, taskDate;
         RelativeLayout taskAdditionalInfo;
 
         public TaskViewHolder(View view) {
             super(view);
             taskName = view.findViewById(R.id.taskName);
             taskDate = view.findViewById(R.id.taskDate);
-            todayCounter = view.findViewById(R.id.todayCounter);
             taskAdditionalInfo = view.findViewById(R.id.taskAdditionalInfo);
             view.setOnClickListener(this);
         }
