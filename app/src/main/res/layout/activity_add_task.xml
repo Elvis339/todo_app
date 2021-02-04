@@ -64,22 +64,23 @@
             android:padding="15dp">
 
             <Switch
-                android:id="@+id/attachmentSwitch"
+                android:id="@+id/mediaSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_media"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
-                android:id="@+id/locationSwitch"
+                android:id="@+id/cameraSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="8dp"
-                android:text="@string/add_location"
+                android:text="@string/add_picture_from_camera"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <ImageView
+                android:layout_margin="12dp"
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

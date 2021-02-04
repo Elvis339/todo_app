@@ -12,7 +12,7 @@ import com.zone.todo.dao.TaskDao;
 import com.zone.todo.entities.Task;
 
 @Database(entities = {Task.class}, version = 1)
-@TypeConverters({DateConverter.class})
+@TypeConverters({DateConverter.class, ImageBitmapToString.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final String DATABASE_NAME = "todos";
@@ -26,6 +26,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
                             // allow queries on the main thread.
                             // Don't do this on a real app! See PersistenceBasicSample for an example.
+                            .fallbackToDestructiveMigration()
                             .allowMainThreadQueries()
                             .build();
         }

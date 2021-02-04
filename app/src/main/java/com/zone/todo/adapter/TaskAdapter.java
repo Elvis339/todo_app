@@ -21,8 +21,8 @@ import java.util.Locale;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     static String TAG = TaskAdapter.class.getSimpleName();
 
-    private static final String DATE_FORMAT = "yyyy/MM/DD";
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+    private static final String DATE_FORMAT = "MM/dd/yy HH:MM";
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
     final private ItemClickListener mItemClickListener;
     final public Context mContext;

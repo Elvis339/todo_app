@@ -42,6 +42,18 @@ public class TaskViewModel extends AndroidViewModel {
         AppDatabase.getAppDatabase(this.getApplication()).taskDao().completeTaskById(id);
     }
 
+    public void createNewTask(Task task) {
+        AppDatabase.getAppDatabase(this.getApplication()).taskDao().insertTask(task);
+    }
+
+    public void updateTask(Task task) {
+        AppDatabase.getAppDatabase(this.getApplication()).taskDao().updateTask(task);
+    }
+
+    public LiveData<List<Task>> searchTasks(String slug) {
+        return AppDatabase.getAppDatabase(this.getApplication()).taskDao().searchTask("%" + slug + "%");
+    }
+
     public LiveData<List<Task>> getTasksObserver() {
         return tasks;
     }

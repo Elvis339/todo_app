@@ -13,26 +13,22 @@ public class Task {
     public int taskId;
 
     @NonNull
-    public String name, description;
+    public String name;
+
+    @Nullable
+    public String description;
+    @Nullable
+    public String imageUri;
 
     @Nullable
     public Date date;
     public boolean isCompleted, isStarred;
 
-    public Task(@NonNull String name, @NonNull String description, @Nullable boolean isCompleted, @Nullable boolean isStarred, @Nullable Date date) {
+    public Task(@NonNull String name) {
         this.name = name;
-        this.description = description;
-        this.isCompleted = isCompleted;
-        this.isStarred = isStarred;
-        this.date = date;
-    }
-
-    public Task createDefaultTask(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.date = new Date();
+        this.isStarred = false;
         this.isCompleted = false;
-        return this;
+        this.date = new Date();
     }
 
     public boolean isStarred() {
@@ -86,6 +82,15 @@ public class Task {
         this.date = date;
     }
 
+    @Nullable
+    public String getImageUri() {
+        return this.imageUri;
+    }
+
+    public void setImageUri(@Nullable String uri) {
+        this.imageUri = uri;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -94,6 +99,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", isCompleted=" + isCompleted +
                 ", date=" + date +
+                ", imageUri=" + imageUri +
                 '}';
     }
 }

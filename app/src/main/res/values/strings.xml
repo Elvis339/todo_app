@@ -10,4 +10,7 @@
     <string name="add_media">Add media</string>
     <string name="add_location">Add location</string>
     <string name="save_task_details">Save Task Details</string>
+    <string name="add_picture_from_camera">Add picture from camera</string>
+    <string name="attachment">Attachment</string>
+    <string name="date">Date</string>
 </resources>
