@@ -24,7 +24,9 @@ public class Task {
     public Date date;
     public boolean isCompleted, isStarred;
 
-    public Task() {}
+    public Task() {
+        this.date = new Date();
+    }
 
     public Task(@NonNull String name) {
         this.name = name;

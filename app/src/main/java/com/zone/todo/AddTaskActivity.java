@@ -167,6 +167,7 @@ public class AddTaskActivity extends AppCompatActivity {
             imageView.setVisibility(View.VISIBLE);
             Bitmap image = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(image);
+            imageUri = ImageBitmapToString.BitmapToString(image);
         }
 
         if (requestCode == 1 && resultCode == RESULT_OK) {

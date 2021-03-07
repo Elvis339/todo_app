@@ -65,14 +65,14 @@
 
             <Button
                 android:id="@+id/mediaSwitch"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/add_media"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Button
                 android:id="@+id/cameraSwitch"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="8dp"

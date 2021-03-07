@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
 import com.zone.todo.dao.TaskDao;
 import com.zone.todo.entities.Task;
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class}, version = 2)
 @TypeConverters({DateConverter.class, ImageBitmapToString.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();

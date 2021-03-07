@@ -1,7 +1,6 @@
 package com.zone.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -18,10 +17,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.zone.todo.adapter.TaskAdapter;
 import com.zone.todo.components.RecyclerViewSwipe;
 import com.zone.todo.database.AppDatabase;
-import com.zone.todo.entities.Task;
+import com.zone.todo.fixtures.TaskFixtures;
 import com.zone.todo.viewmodel.TaskViewModel;
-
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
@@ -37,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+//        AppDatabase.deleteDatabase(this.getApplicationContext());
+//
+//        TaskFixtures taskFixtures = new TaskFixtures(this.getApplicationContext());
+//        taskFixtures.execute();
     }
 
     void init() {
