@@ -8,11 +8,14 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zone.todo.database.AppDatabase;
@@ -33,9 +36,12 @@ public class SingleTaskActivity extends AppCompatActivity {
     private Task task;
     private TaskViewModel taskViewModel;
 
-    Button deleteButton, saveButton, dateButton;
+    Button deleteButton, updateButton;
+    TextView datePicker;
+    EditText taskName, taskDescription;
+    ImageView attachment;
 
-    String format = "MM/dd/yy HH:MM";
+    String format = "MM/dd/yy";
     SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 
     @Override
@@ -59,24 +65,23 @@ public class SingleTaskActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        EditText taskName, taskDescription;
-        ImageView attachment;
-
         taskName = findViewById(R.id.taskName);
         taskDescription = findViewById(R.id.taskDescription);
         attachment = findViewById(R.id.attachment);
+        datePicker = findViewById(R.id.datePicker);
 
+        updateButton = findViewById(R.id.updateButton);
         deleteButton = findViewById(R.id.deleteButton);
-        dateButton = findViewById(R.id.dateButton);
 
         if (task != null) {
             taskName.setText(task.getName());
             taskDescription.setText(task.getDescription());
             attachment.setImageBitmap(ImageBitmapToString.StringToBitmap(task.getImageUri()));
-            dateButton.setText(sdf.format(task.getDate()));
+            datePicker.setText(sdf.format(task.getDate()));
         }
 
         attachButtonListeners();
+        attachTextWatchers();
     }
 
     private void attachButtonListeners() {
@@ -88,7 +93,7 @@ public class SingleTaskActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                dateButton.setText(sdf.format(myCalendar.getTime()));
+                datePicker.setText(sdf.format(myCalendar.getTime()));
                 task.setDate(myCalendar.getTime());
 
                 taskViewModel.updateTask(task);
@@ -96,7 +101,7 @@ public class SingleTaskActivity extends AppCompatActivity {
             }
         };
 
-        dateButton.setOnClickListener(listener -> {
+        datePicker.setOnClickListener(listener -> {
             DatePickerDialog dp = new DatePickerDialog(this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH));
@@ -106,6 +111,53 @@ public class SingleTaskActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(listener -> {
             taskViewModel.deleteTask(task);
             navigateBack();
+        });
+
+        updateButton.setOnClickListener(listener -> {
+            taskViewModel.updateTask(task);
+            showToast();
+        });
+    }
+
+    private void attachTextWatchers() {
+        taskName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0 && !task.getName().equals(s.toString())) {
+                    task.setName(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        taskDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0 && !task.getDescription().equals(s.toString())) {
+                    task.setDescription(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
     }
 

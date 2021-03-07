@@ -24,6 +24,8 @@ public class Task {
     public Date date;
     public boolean isCompleted, isStarred;
 
+    public Task() {}
+
     public Task(@NonNull String name) {
         this.name = name;
         this.isStarred = false;

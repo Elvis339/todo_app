@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,9 +25,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zone.todo.database.ImageBitmapToString;
@@ -35,16 +38,26 @@ import com.zone.todo.viewmodel.TaskViewModel;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddTaskActivity extends AppCompatActivity {
     public static final String TAG = AddTaskActivity.class.getSimpleName();
     private EditText taskName, taskDescription;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch mediaSwitch, cameraSwitch;
+    private Button mediaSwitch, cameraSwitch;
     private ImageView imageView;
     private Button saveButton;
     private String imageUri;
+    private TextView datePicker;
     TaskViewModel taskViewModel;
+
+    String format = "MM/dd/yy";
+    SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+
+    Task task = new Task();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -64,22 +77,18 @@ public class AddTaskActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
         mediaSwitch = findViewById(R.id.mediaSwitch);
         cameraSwitch = findViewById(R.id.cameraSwitch);
+        datePicker = findViewById(R.id.datePicker);
 
-        mediaSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                loadImagesFromGallery();
-                imageView.setVisibility(View.VISIBLE);
-            }
-            imageView.setVisibility(View.GONE);
+        datePicker.setText(sdf.format(new Date()));
+
+        mediaSwitch.setOnClickListener(listener -> {
+            loadImagesFromGallery();
+            imageView.setVisibility(View.VISIBLE);
         });
-
-        cameraSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            if (isChecked) {
-                askForCameraPermission();
-                imageView.setVisibility(View.VISIBLE);
-            }
-            imageView.setVisibility(View.GONE);
-        }));
+        cameraSwitch.setOnClickListener(listener -> {
+            askForCameraPermission();
+            imageView.setVisibility(View.VISIBLE);
+        });
 
         taskName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -97,7 +106,7 @@ public class AddTaskActivity extends AppCompatActivity {
         });
 
         saveButton.setOnClickListener(listener -> {
-            Task task = new Task(taskName.getText().toString());
+            task.setName(taskName.getText().toString());
             if (!taskDescription.getText().toString().equals(" ") && taskDescription.getText().length() > 3) {
                 task.setDescription(taskDescription.getText().toString());
             }
@@ -110,6 +119,7 @@ public class AddTaskActivity extends AppCompatActivity {
             Intent intent = new Intent(AddTaskActivity.this, MainActivity.class);
             startActivity(intent);
         });
+        attachCalendar();
     }
 
     private void askForCameraPermission() {
@@ -146,8 +156,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-        mediaSwitch.setChecked(false);
-        cameraSwitch.setChecked(false);
+        imageView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -188,5 +197,26 @@ public class AddTaskActivity extends AppCompatActivity {
             }
             imageView.setImageBitmap(bitmap);
         }
+    }
+
+    private void attachCalendar() {
+        final Calendar myCalendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                datePicker.setText(sdf.format(myCalendar.getTime()));
+                task.setDate(myCalendar.getTime());
+            }
+        };
+        datePicker.setOnClickListener(listener -> {
+            DatePickerDialog dp = new DatePickerDialog(this, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
+            dp.show();
+        });
     }
 }
