@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,10 +24,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +44,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String TAG = AddTaskActivity.class.getSimpleName();
     private EditText taskName, taskDescription;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Button mediaSwitch, cameraSwitch;
+    private Button cameraSwitch;
     private ImageView imageView;
     private Button saveButton;
     private String imageUri;
@@ -75,16 +72,11 @@ public class AddTaskActivity extends AppCompatActivity {
         taskDescription = findViewById(R.id.taskDescription);
         imageView = findViewById(R.id.imageView);
         saveButton = findViewById(R.id.saveButton);
-        mediaSwitch = findViewById(R.id.mediaSwitch);
         cameraSwitch = findViewById(R.id.cameraSwitch);
         datePicker = findViewById(R.id.datePicker);
 
         datePicker.setText(sdf.format(new Date()));
 
-        mediaSwitch.setOnClickListener(listener -> {
-            loadImagesFromGallery();
-            imageView.setVisibility(View.VISIBLE);
-        });
         cameraSwitch.setOnClickListener(listener -> {
             askForCameraPermission();
             imageView.setVisibility(View.VISIBLE);
@@ -146,19 +138,6 @@ public class AddTaskActivity extends AppCompatActivity {
         startActivityForResult(camera, 102);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void loadImagesFromGallery() {
-        if (ActivityCompat.checkSelfPermission(AddTaskActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(AddTaskActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 102);
-        }
-
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-        imageView.setVisibility(View.INVISIBLE);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -202,16 +181,13 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private void attachCalendar() {
         final Calendar myCalendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                datePicker.setText(sdf.format(myCalendar.getTime()));
-                task.setDate(myCalendar.getTime());
-            }
+            datePicker.setText(sdf.format(myCalendar.getTime()));
+            task.setDate(myCalendar.getTime());
         };
         datePicker.setOnClickListener(listener -> {
             DatePickerDialog dp = new DatePickerDialog(this, date, myCalendar

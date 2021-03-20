@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.zone.todo.adapter.TaskAdapter;
@@ -24,8 +23,6 @@ import com.zone.todo.viewmodel.TaskViewModel;
 public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private TaskAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private SearchView searchbox;
     AppDatabase mDb;
     TaskViewModel taskViewModel;
 
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
             startActivity(intent);
         });
 
-        mRecyclerView = findViewById(R.id.tasksRecyclerView);
+        RecyclerView mRecyclerView = findViewById(R.id.tasksRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new TaskAdapter(this, this);
@@ -60,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerViewSwipe(mAdapter, taskViewModel));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-        searchbox = findViewById(R.id.searchbox);
     }
 
     private void setupViewModel() {
